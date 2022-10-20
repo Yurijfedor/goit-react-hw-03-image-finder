@@ -3,6 +3,7 @@ import { Searchbar } from './imageGallery/searchbar';
 import { ImageGallery } from './imageGallery/imageGallery';
 import { Button } from './imageGallery/button';
 import { Loader } from './imageGallery/loader';
+import { Modal } from './imageGallery/modal';
 import PixabayApiService from './services/pixabayApiService';
 
 const pixabayApiService = new PixabayApiService();
@@ -10,6 +11,9 @@ const INITIAL_STATE = {
   query: '',
   items: [],
   isLoader: false,
+  page: 1,
+  largeImageUrl: '',
+  showModal: false,
 };
 export class App extends Component {
   state = {
@@ -20,15 +24,16 @@ export class App extends Component {
     const prevQuery = prevState.query;
     const nextQuery = this.state.query;
 
-    if (prevQuery !== nextQuery) {
+    if (prevQuery !== nextQuery || prevState.page !== this.state.page) {
       pixabayApiService
         .fetchPictures()
         .then(response => {
           this.toglleLoader();
           const collectionOfImages = response.data.hits;
           this.setState(prevState => ({
-            items: [...collectionOfImages, ...prevState.items],
+            items: [...prevState.items, ...collectionOfImages],
           }));
+          pixabayApiService.incrementPage();
         })
         .finally(this.toglleLoader());
     }
@@ -43,6 +48,7 @@ export class App extends Component {
       : alert('Please, enter your query!');
     pixabayApiService.query = query;
     pixabayApiService.resetPage();
+    console.log(this.state.page);
   };
 
   toglleLoader() {
@@ -55,13 +61,40 @@ export class App extends Component {
     this.setState({ ...INITIAL_STATE });
   }
 
+  loadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
+  };
+
+  changeLargeImage = url => {
+    this.setState({ largeImageUrl: url });
+    this.toggleModal();
+  };
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
   render() {
     return (
       <>
+        {this.state.showModal && (
+          <Modal
+            onClose={this.toggleModal}
+            largeImageUrl={this.state.largeImageUrl}
+          />
+        )}
         <Searchbar onSubmit={this.handleSubmit} />
+
+        <ImageGallery
+          images={this.state.items}
+          onClick={this.changeLargeImage}
+        />
         <Loader showingLoader={this.state.isLoader} />
-        <ImageGallery images={this.state.items} />
-        <Button />
+        <Button onClick={this.loadMore} />
       </>
     );
   }

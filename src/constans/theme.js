@@ -12,6 +12,7 @@ export const theme = {
     tableTextColor: '#686461',
     theadBgColor: '#8FD4C1',
     tableTrSecondaryBgColor: '#E8E6D1',
+    modalBgColor: 'rgba(0, 0, 0, 0.8)',
   },
   space: [0, 2, 4, 8, 16, 32, 64, 128, 256],
   fonts: {
