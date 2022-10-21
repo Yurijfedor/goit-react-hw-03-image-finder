@@ -92,9 +92,7 @@ export class App extends Component {
 
         <ImageGallery images={items} onClick={this.changeLargeImage} />
         {isLoader && <Loader />}
-        {items.length >= 12 && items.length !== 0 && (
-          <Button onClick={this.loadMore} />
-        )}
+        {items.length === 12 && <Button onClick={this.loadMore} />}
       </Box>
     );
   }
