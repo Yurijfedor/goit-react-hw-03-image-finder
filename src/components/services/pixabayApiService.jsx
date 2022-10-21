@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import axios from 'axios';
 
 export const fetchPictures = async (searchQuery, page) => {
@@ -19,4 +21,9 @@ export const fetchPictures = async (searchQuery, page) => {
   } catch (error) {
     console.log(error.message);
   }
+};
+
+fetchPictures.propTypes = {
+  searchQuery: PropTypes.string.isRequired,
+  page: PropTypes.number.isRequired,
 };

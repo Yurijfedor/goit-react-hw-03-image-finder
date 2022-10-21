@@ -75,7 +75,7 @@ export class App extends Component {
   };
 
   render() {
-    const { query, showModal, largeImageUrl, items, isLoader } = this.state;
+    const { showModal, largeImageUrl, items, isLoader } = this.state;
     return (
       <Box display={'grid'} gridTemplateColumns={'1fr'} gridGap={4} pb={4}>
         {showModal && (
@@ -85,7 +85,7 @@ export class App extends Component {
 
         <ImageGallery images={items} onClick={this.changeLargeImage} />
         {isLoader && <Loader />}
-        {query && <Button onClick={this.loadMore} />}
+        {items.length !== 0 && <Button onClick={this.loadMore} />}
       </Box>
     );
   }
