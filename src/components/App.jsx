@@ -4,9 +4,9 @@ import { ImageGallery } from './imageGallery/imageGallery';
 import { Button } from './imageGallery/button';
 import { Loader } from './imageGallery/loader';
 import { Modal } from './imageGallery/modal';
-import PixabayApiService from './services/pixabayApiService';
+import { fetchPictures } from './services/pixabayApiService';
+import { Box } from 'constans';
 
-const pixabayApiService = new PixabayApiService();
 const INITIAL_STATE = {
   query: '',
   items: [],
@@ -21,23 +21,21 @@ export class App extends Component {
   };
 
   componentDidUpdate(_, prevState) {
+    const { query, page } = this.state;
     const prevQuery = prevState.query;
-    const nextQuery = this.state.query;
+    const nextQuery = query;
 
-    if (prevQuery !== nextQuery || prevState.page !== this.state.page) {
-      pixabayApiService
-        .fetchPictures()
+    if (prevQuery !== nextQuery || prevState.page !== page) {
+      fetchPictures(query, page)
         .then(response => {
           this.toglleLoader();
           const collectionOfImages = response.data.hits;
           this.setState(prevState => ({
             items: [...prevState.items, ...collectionOfImages],
           }));
-          pixabayApiService.incrementPage();
         })
         .finally(this.toglleLoader());
     }
-    pixabayApiService.incrementPage();
   }
 
   handleSubmit = value => {
@@ -46,9 +44,6 @@ export class App extends Component {
     value.trim() !== ''
       ? this.setState({ query: query })
       : alert('Please, enter your query!');
-    pixabayApiService.query = query;
-    pixabayApiService.resetPage();
-    console.log(this.state.page);
   };
 
   toglleLoader() {
@@ -62,9 +57,10 @@ export class App extends Component {
   }
 
   loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
+    this.state.query &&
+      this.setState(prevState => ({
+        page: prevState.page + 1,
+      }));
   };
 
   changeLargeImage = url => {
@@ -79,23 +75,18 @@ export class App extends Component {
   };
 
   render() {
+    const { query, showModal, largeImageUrl, items, isLoader } = this.state;
     return (
-      <>
-        {this.state.showModal && (
-          <Modal
-            onClose={this.toggleModal}
-            largeImageUrl={this.state.largeImageUrl}
-          />
+      <Box display={'grid'} gridTemplateColumns={'1fr'} gridGap={4} pb={4}>
+        {showModal && (
+          <Modal onClose={this.toggleModal} largeImageUrl={largeImageUrl} />
         )}
         <Searchbar onSubmit={this.handleSubmit} />
 
-        <ImageGallery
-          images={this.state.items}
-          onClick={this.changeLargeImage}
-        />
-        <Loader showingLoader={this.state.isLoader} />
-        <Button onClick={this.loadMore} />
-      </>
+        <ImageGallery images={items} onClick={this.changeLargeImage} />
+        {isLoader && <Loader />}
+        {query && <Button onClick={this.loadMore} />}
+      </Box>
     );
   }
 }

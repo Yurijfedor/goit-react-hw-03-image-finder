@@ -1,14 +1,15 @@
+import { GalleryItem, GalleryImage } from './imageGallery.styled';
 export const ImageGalleryItem = ({
   imageData: { webformatURL, tags, largeImageURL },
   onClick,
 }) => {
   return (
-    <li>
-      <img
+    <GalleryItem>
+      <GalleryImage
         src={webformatURL}
         alt={tags}
         onClick={() => onClick(largeImageURL)}
       />
-    </li>
+    </GalleryItem>
   );
 };

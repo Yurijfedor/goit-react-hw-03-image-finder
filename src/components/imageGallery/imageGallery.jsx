@@ -1,18 +1,17 @@
 import { ImageGalleryItem } from './imageGalleryItem';
+import { GalleryList } from './imageGallery.styled';
 export const ImageGallery = ({ images, onClick }) => {
   return (
-    <ul>
+    <GalleryList>
       {images.map(image => {
         return (
           <ImageGalleryItem
             key={image.id}
             imageData={image}
             onClick={onClick}
-            // url={image.webformatURL}
-            // alt={image.tags}
           ></ImageGalleryItem>
         );
       })}
-    </ul>
+    </GalleryList>
   );
 };

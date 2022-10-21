@@ -13,8 +13,10 @@ export const theme = {
     theadBgColor: '#8FD4C1',
     tableTrSecondaryBgColor: '#E8E6D1',
     modalBgColor: 'rgba(0, 0, 0, 0.8)',
+    searchFormBgColor: '#3f51b5',
+    btnLoadMoreBgColor: '#303f9f',
   },
-  space: [0, 2, 4, 8, 16, 32, 64, 128, 256],
+  space: [0, 2, 4, 8, 12, 24, 16, 32, 64, 128, 256],
   fonts: {
     body: 'system-ui, sans-serif',
     heading: 'system-ui, sans-serif',
@@ -23,7 +25,7 @@ export const theme = {
   fontSizes: {
     xs: '12px',
     s: '14px',
-    m: '16px',
+    m: '18px',
     md: '22px',
     l: '32px',
     xl: '64px',
@@ -43,6 +45,7 @@ export const theme = {
   },
   radii: {
     none: '0',
+    mini: '2px',
     normal: '5px',
     medium: '10px',
     round: '50%',

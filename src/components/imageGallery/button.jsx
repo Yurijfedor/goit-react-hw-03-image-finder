@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
+import { ButtonLoadMore } from './imageGallery.styled';
 export const Button = ({ onClick }) => {
   return (
-    <button type="button" onClick={onClick}>
-      ...Load more
-    </button>
+    <ButtonLoadMore type="button" onClick={onClick}>
+      Load more...
+    </ButtonLoadMore>
   );
 };
 

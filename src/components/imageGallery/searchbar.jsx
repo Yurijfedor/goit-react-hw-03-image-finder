@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Header, Form, FormButton, Input } from './imageGallery.styled';
 
 export class Searchbar extends Component {
   getQueryValue = evt => {
@@ -10,21 +11,19 @@ export class Searchbar extends Component {
 
   render() {
     return (
-      <header>
-        <form onSubmit={this.getQueryValue}>
-          <button type="submit">
-            <span>Search</span>
-          </button>
+      <Header>
+        <Form onSubmit={this.getQueryValue}>
+          <FormButton type="submit"></FormButton>
 
-          <input
+          <Input
             type="text"
             name="query"
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
           />
-        </form>
-      </header>
+        </Form>
+      </Header>
     );
   }
 }
