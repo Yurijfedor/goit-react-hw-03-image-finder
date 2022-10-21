@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Searchbar } from './imageGallery/searchbar';
 import { ImageGallery } from './imageGallery/imageGallery';
 import { Button } from './imageGallery/button';
@@ -28,6 +29,12 @@ export class App extends Component {
     if (prevQuery !== nextQuery || prevState.page !== page) {
       fetchPictures(query, page)
         .then(response => {
+          if (response.data.hits.length === 0) {
+            this.toglleLoader();
+            return Notify.failure(
+              `Sorry, we couldn't find anything else! Try another query!`
+            );
+          }
           this.toglleLoader();
           const collectionOfImages = response.data.hits;
           this.setState(prevState => ({
@@ -43,7 +50,7 @@ export class App extends Component {
     const query = value.toLowerCase();
     value.trim() !== ''
       ? this.setState({ query: query })
-      : alert('Please, enter your query!');
+      : Notify.failure('Please, enter your query!');
   };
 
   toglleLoader() {
