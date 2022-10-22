@@ -95,7 +95,9 @@ export class App extends Component {
 
         <ImageGallery images={items} onClick={this.changeLargeImage} />
         {isLoader && <Loader />}
-        {items.length !== totalImages && <Button onClick={this.loadMore} />}
+        {items.length !== totalImages && items.length !== 0 && (
+          <Button onClick={this.loadMore} />
+        )}
       </Box>
     );
   }
