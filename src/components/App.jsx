@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   page: 1,
   largeImageUrl: '',
   showModal: false,
+  totalImages: 1,
 };
 export class App extends Component {
   state = {
@@ -39,6 +40,7 @@ export class App extends Component {
           const collectionOfImages = response.data.hits;
           this.setState(prevState => ({
             items: [...prevState.items, ...collectionOfImages],
+            totalImages: response.data.total,
           }));
         })
         .finally(this.toglleLoader());
@@ -82,7 +84,8 @@ export class App extends Component {
   };
 
   render() {
-    const { showModal, largeImageUrl, items, isLoader } = this.state;
+    const { showModal, largeImageUrl, items, isLoader, totalImages } =
+      this.state;
     return (
       <Box display={'grid'} gridTemplateColumns={'1fr'} gridGap={4} pb={4}>
         {showModal && (
@@ -92,7 +95,7 @@ export class App extends Component {
 
         <ImageGallery images={items} onClick={this.changeLargeImage} />
         {isLoader && <Loader />}
-        {items.length === 12 && <Button onClick={this.loadMore} />}
+        {items.length !== totalImages && <Button onClick={this.loadMore} />}
       </Box>
     );
   }
